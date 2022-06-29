@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Welcome } from "./Welcome";
 import { Nav } from "./Nav";
 import { Create } from "./Create";
+import { Update } from "./Update";
 import { Read } from "./Read";
 
 function Control() {
@@ -50,6 +51,7 @@ function App() {
     refresh();
   }, []);
 
+  // CREATE
   async function createHandler(title, body) {
     // 1. post 방식으로 서버에 데이터를 전송한다.
     const resp = await fetch("/topics", {
@@ -61,11 +63,30 @@ function App() {
     });
 
     const data = await resp.json();
-    console.log("data : ", data);
+    console.log("created data : ", data);
 
     // 2. refresh 를 호출한다.
     refresh(); // <Nav> 컴포넌트의 topics를 재 랜더링한다.
-    navigate("/read/" + data.id); // 주소도 방금 추가한 데이터의 Read url 로 바꾼다.
+    navigate("/read/" + data.id); // 주소도 방금 추가한 데이터의 Read url로 바꾼다.
+  }
+
+  // UPDATE
+  async function updateHandler(id, title, body) {
+    // 1. put 방식으로 서버에 데이터를 전송한다.
+    const resp = await fetch("/topics/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, body }),
+    });
+
+    const data = await resp.json();
+    console.log("updated data : ", data);
+
+    // 2. refresh 를 호출한다.
+    refresh(); // <Nav> 컴포넌트의 topics를 재 랜더링한다.
+    navigate("/read/" + id); // 주소도 방금 업데이트한 데이터의 Read url로 바꾼다.
   }
 
   return (
@@ -78,6 +99,10 @@ function App() {
         <Route
           path="/create"
           element={<Create onCreate={createHandler} />}
+        ></Route>
+        <Route
+          path="/update/:id"
+          element={<Update onUpdate={updateHandler} />}
         ></Route>
       </Routes>
       <Routes>
