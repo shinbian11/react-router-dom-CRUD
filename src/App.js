@@ -37,7 +37,7 @@ function App() {
   const [topics, setTopics] = useState([]);
 
   async function refresh() {
-    const resp = await fetch("http://localhost:3333/topics");
+    const resp = await fetch("/topics");
     const data = await resp.json();
     setTopics((current) => data);
   }
