@@ -39,10 +39,25 @@ function Read() {
 }
 
 function Control() {
+  const params = useParams();
+  const id = Number(params.id);
+  let contextUI = null;
+
+  // id가 있을 때에만 Update 버튼 보이게 하기
+  if (id) {
+    contextUI = (
+      <>
+        <li>
+          <Link to={`/update/${id}`}>Update</Link>
+        </li>
+      </>
+    );
+  }
   return (
     <ul>
       <li>
         <Link to="/create">Create</Link>
+        {contextUI}
       </li>
     </ul>
   );
@@ -120,7 +135,11 @@ function App() {
           element={<Create onCreate={createHandler} />}
         ></Route>
       </Routes>
-      <Control></Control>
+      <Routes>
+        <Route path="/" element={<Control></Control>}></Route>
+        <Route path="/read/:id" element={<Control></Control>}></Route>
+      </Routes>
+      {/* <Control></Control> */}
     </div>
   );
 }
