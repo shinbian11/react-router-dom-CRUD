@@ -48,6 +48,31 @@ function Control() {
   );
 }
 
+function Create({ onCreate }) {
+  function submitHandler(e) {
+    e.preventDefault();
+    const title = e.target.title.value;
+    const body = e.target.body.value;
+    onCreate(title, body);
+  }
+  return (
+    <article>
+      <h1>Create</h1>
+      <form onSubmit={submitHandler}>
+        <p>
+          <input type="text" name="title" placeholder="title"></input>
+        </p>
+        <p>
+          <textarea name="body" placeholder="body"></textarea>
+        </p>
+        <p>
+          <input type="submit" value="create"></input>
+        </p>
+      </form>
+    </article>
+  );
+}
+
 function App() {
   // 1. useEffect를 이용, 한번만 실행
   // 2. fetch 를 이용
@@ -64,6 +89,10 @@ function App() {
     refresh();
   }, []);
 
+  function createHandler(title, body) {
+    alert(title + " , " + body);
+  }
+
   return (
     <div>
       <Header></Header>
@@ -71,6 +100,10 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Welcome />}></Route>
         <Route path="/read/:id" element={<Read />}></Route>
+        <Route
+          path="/create"
+          element={<Create onCreate={createHandler} />}
+        ></Route>
       </Routes>
       <Control></Control>
     </div>
