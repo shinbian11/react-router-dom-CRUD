@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Header } from "./Header";
-import { Link, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Welcome } from "./Welcome";
 
@@ -20,10 +20,12 @@ function Nav(props) {
 }
 
 function Read() {
+  const params = useParams();
+
   return (
     <article>
       <h2>Read</h2>
-      Hello, Read
+      Hello, Read {params.id}
     </article>
   );
 }
@@ -50,7 +52,7 @@ function App() {
       <Nav data={topics}></Nav>
       <Routes>
         <Route exact path="/" element={<Welcome />}></Route>
-        <Route path="/read/1" element={<Read />}></Route>
+        <Route path="/read/:id" element={<Read />}></Route>
       </Routes>
     </div>
   );
