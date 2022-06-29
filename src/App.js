@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Header } from "./Header";
-import { Routes, Route, useParams, Link } from "react-router-dom";
+import { Routes, Route, useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Welcome } from "./Welcome";
 import { Nav } from "./Nav";
@@ -78,6 +78,7 @@ function App() {
   // 2. fetch 를 이용
   // 3. topics state를 갱신
   const [topics, setTopics] = useState([]);
+  const navigate = useNavigate();
 
   async function refresh() {
     const resp = await fetch("/topics");
@@ -89,8 +90,22 @@ function App() {
     refresh();
   }, []);
 
-  function createHandler(title, body) {
-    alert(title + " , " + body);
+  async function createHandler(title, body) {
+    // 1. post 방식으로 서버에 데이터를 전송한다.
+    const resp = await fetch("/topics", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ title, body }),
+    });
+
+    const data = await resp.json();
+    console.log("data : ", data);
+
+    // 2. refresh 를 호출한다.
+    refresh(); // <Nav> 컴포넌트의 topics를 재 랜더링한다.
+    navigate("/read/" + data.id); // 주소도 방금 추가한 데이터의 Read url 로 바꾼다.
   }
 
   return (
