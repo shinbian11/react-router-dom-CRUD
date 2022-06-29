@@ -38,6 +38,16 @@ function Read() {
   );
 }
 
+function Control() {
+  return (
+    <ul>
+      <li>
+        <Link to="/create">Create</Link>
+      </li>
+    </ul>
+  );
+}
+
 function App() {
   // 1. useEffect를 이용, 한번만 실행
   // 2. fetch 를 이용
@@ -62,6 +72,7 @@ function App() {
         <Route exact path="/" element={<Welcome />}></Route>
         <Route path="/read/:id" element={<Read />}></Route>
       </Routes>
+      <Control></Control>
     </div>
   );
 }
