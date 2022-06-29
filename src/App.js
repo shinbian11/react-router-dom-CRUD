@@ -9,7 +9,7 @@ import { Create } from "./Create";
 import { Update } from "./Update";
 import { Read } from "./Read";
 
-function Control() {
+function Control(props) {
   const params = useParams();
   const id = Number(params.id);
   let contextUI = null;
@@ -20,6 +20,15 @@ function Control() {
       <>
         <li>
           <Link to={`/update/${id}`}>Update</Link>
+        </li>
+        <li>
+          <button
+            onClick={() => {
+              props.onDelete(id);
+            }}
+          >
+            Delete
+          </button>
         </li>
       </>
     );
@@ -89,6 +98,27 @@ function App() {
     navigate("/read/" + id); // 주소도 방금 업데이트한 데이터의 Read url로 바꾼다.
   }
 
+  // DELETE
+  async function deleteHandler(id) {
+    // 1. put 방식으로 서버에 데이터를 전송한다.
+    const resp = await fetch("/topics/" + id, {
+      method: "DELETE",
+
+      // DELETE 할 때는 우리가 전송한 데이터가 없으므로, headers, body가 필요없다.
+
+      // headers: {
+      //   "Content-Type": "application/json",
+      // },
+      // body: JSON.stringify({ title, body }),
+    });
+
+    const data = await resp.json();
+
+    // 2. refresh 를 호출한다.
+    refresh(); // <Nav> 컴포넌트의 topics를 재 랜더링한다.
+    navigate("/"); // home 으로 돌아간다..
+  }
+
   return (
     <div>
       <Header></Header>
@@ -107,7 +137,10 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/" element={<Control></Control>}></Route>
-        <Route path="/read/:id" element={<Control></Control>}></Route>
+        <Route
+          path="/read/:id"
+          element={<Control onDelete={deleteHandler}></Control>}
+        ></Route>
       </Routes>
       {/* <Control></Control> */}
     </div>
