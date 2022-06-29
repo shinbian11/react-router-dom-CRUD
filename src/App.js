@@ -21,11 +21,11 @@ function Nav(props) {
 
 function Read() {
   const params = useParams();
-
+  const id = Number(params.id); // 기본적으로 parameter는 url 에서 가져온 것이므로, string 형태이다. 이를 number 형으로 변환해줌!
   return (
     <article>
       <h2>Read</h2>
-      Hello, Read {params.id}
+      Hello, Read {id}
     </article>
   );
 }
