@@ -5,6 +5,7 @@ import { Routes, Route, useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Welcome } from "./Welcome";
 import { Nav } from "./Nav";
+import { Create } from "./Create";
 
 function Read() {
   const params = useParams();
@@ -60,31 +61,6 @@ function Control() {
         {contextUI}
       </li>
     </ul>
-  );
-}
-
-function Create({ onCreate }) {
-  function submitHandler(e) {
-    e.preventDefault();
-    const title = e.target.title.value;
-    const body = e.target.body.value;
-    onCreate(title, body);
-  }
-  return (
-    <article>
-      <h1>Create</h1>
-      <form onSubmit={submitHandler}>
-        <p>
-          <input type="text" name="title" placeholder="title"></input>
-        </p>
-        <p>
-          <textarea name="body" placeholder="body"></textarea>
-        </p>
-        <p>
-          <input type="submit" value="create"></input>
-        </p>
-      </form>
-    </article>
   );
 }
 
